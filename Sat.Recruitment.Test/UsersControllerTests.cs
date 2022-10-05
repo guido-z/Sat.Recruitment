@@ -19,7 +19,7 @@ namespace Sat.Recruitment.Test
         private readonly ILogger<UsersController> logger = Mock.Of<ILogger<UsersController>>();
 
         [Fact]
-        public async Task CreateUser_UserDoesNotExist_ReturnsOk()
+        public async Task CreateUserAsync_UserDoesNotExist_ReturnsOk()
         {
             var model = new UserViewModel
             {
@@ -44,13 +44,13 @@ namespace Sat.Recruitment.Test
 
             var userController = new UsersController(application.Object, logger);
 
-            IActionResult result = await userController.CreateUser(model);
+            IActionResult result = await userController.CreateUserAsync(model);
 
             Assert.IsAssignableFrom<OkObjectResult>(result);
         }
 
         [Fact]
-        public async Task CreateUser_UserExists_ReturnsBadRequest()
+        public async Task CreateUserAsync_UserExists_ReturnsBadRequest()
         {
             var model = new UserViewModel
             {
@@ -67,7 +67,7 @@ namespace Sat.Recruitment.Test
 
             var userController = new UsersController(application.Object, logger);
             
-            IActionResult result = await userController.CreateUser(model);
+            IActionResult result = await userController.CreateUserAsync(model);
 
             Assert.IsAssignableFrom<BadRequestObjectResult>(result);            
         }

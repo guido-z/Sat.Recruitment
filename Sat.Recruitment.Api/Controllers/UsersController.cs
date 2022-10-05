@@ -26,7 +26,7 @@ namespace Sat.Recruitment.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser(UserViewModel model, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> CreateUserAsync(UserViewModel model, CancellationToken cancellationToken = default)
         {
             logger.LogInformation("Creating user {0}.", model.Email);
 
