@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Sat.Recruitment.Api.Models;
 using Sat.Recruitment.Api.Results;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 
 namespace Sat.Recruitment.Api.Controllers
@@ -19,61 +21,47 @@ namespace Sat.Recruitment.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser(string name, string email, string address, string phone, string userType, string money)
+        public async Task<IActionResult> CreateUser(UserViewModel model)
         {
-            var errors = "";
-
-            ValidateErrors(name, email, address, phone, ref errors);
-
-            if (errors != null && errors != "")
+            if (!ModelState.IsValid)
             {
-                return ResultFactory.FromErrorMessages(errors);
+                return ResultFactory.FromValidationErrors(ModelState);
             }
 
-            var newUser = new User
+            if (model.UserType == "Normal")
             {
-                Name = name,
-                Email = email,
-                Address = address,
-                Phone = phone,
-                UserType = userType,
-                Money = decimal.Parse(money)
-            };
-
-            if (newUser.UserType == "Normal")
-            {
-                if (decimal.Parse(money) > 100)
+                if (model.Money > 100)
                 {
                     var percentage = Convert.ToDecimal(0.12);
                     //If new user is normal and has more than USD100
-                    var gif = decimal.Parse(money) * percentage;
-                    newUser.Money = newUser.Money + gif;
+                    var gif = model.Money * percentage;
+                    model.Money += gif;
                 }
-                if (decimal.Parse(money) < 100)
+                if (model.Money < 100)
                 {
-                    if (decimal.Parse(money) > 10)
+                    if (model.Money > 10)
                     {
                         var percentage = Convert.ToDecimal(0.8);
-                        var gif = decimal.Parse(money) * percentage;
-                        newUser.Money = newUser.Money + gif;
+                        var gif = model.Money * percentage;
+                        model.Money += gif;
                     }
                 }
             }
-            if (newUser.UserType == "SuperUser")
+            if (model.UserType == "SuperUser")
             {
-                if (decimal.Parse(money) > 100)
+                if (model.Money > 100)
                 {
                     var percentage = Convert.ToDecimal(0.20);
-                    var gif = decimal.Parse(money) * percentage;
-                    newUser.Money = newUser.Money + gif;
+                    var gif = model.Money * percentage;
+                    model.Money += gif;
                 }
             }
-            if (newUser.UserType == "Premium")
+            if (model.UserType == "Premium")
             {
-                if (decimal.Parse(money) > 100)
+                if (model.Money > 100)
                 {
-                    var gif = decimal.Parse(money) * 2;
-                    newUser.Money = newUser.Money + gif;
+                    var gif = model.Money * 2;
+                    model.Money += gif;
                 }
             }
 
@@ -81,13 +69,13 @@ namespace Sat.Recruitment.Api.Controllers
             var reader = ReadUsersFromFile();
 
             //Normalize email
-            var aux = newUser.Email.Split(new char[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+            var aux = model.Email.Split(new char[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
 
             var atIndex = aux[0].IndexOf("+", StringComparison.Ordinal);
 
             aux[0] = atIndex < 0 ? aux[0].Replace(".", "") : aux[0].Replace(".", "").Remove(atIndex);
 
-            newUser.Email = string.Join("@", new string[] { aux[0], aux[1] });
+            model.Email = string.Join("@", new string[] { aux[0], aux[1] });
 
             while (reader.Peek() >= 0)
             {
@@ -109,15 +97,15 @@ namespace Sat.Recruitment.Api.Controllers
                 var isDuplicated = false;
                 foreach (var user in _users)
                 {
-                    if (user.Email == newUser.Email
+                    if (user.Email == model.Email
                         ||
-                        user.Phone == newUser.Phone)
+                        user.Phone == model.Phone)
                     {
                         isDuplicated = true;
                     }
-                    else if (user.Name == newUser.Name)
+                    else if (user.Name == model.Name)
                     {
-                        if (user.Address == newUser.Address)
+                        if (user.Address == model.Address)
                         {
                             isDuplicated = true;
                             throw new Exception("User is duplicated");
@@ -130,7 +118,7 @@ namespace Sat.Recruitment.Api.Controllers
                 {
                     Debug.WriteLine("User Created");
 
-                    return ResultFactory.FromSuccess(newUser);
+                    return ResultFactory.FromSuccess(model);
                 }
                 else
                 {
@@ -145,24 +133,7 @@ namespace Sat.Recruitment.Api.Controllers
                 return ResultFactory.FromErrorMessages("The user is duplicated");
             }
 
-            return ResultFactory.FromSuccess(newUser);
-        }
-
-        //Validate errors
-        private void ValidateErrors(string name, string email, string address, string phone, ref string errors)
-        {
-            if (name == null)
-                //Validate if Name is null
-                errors = "The name is required";
-            if (email == null)
-                //Validate if Email is null
-                errors = errors + " The email is required";
-            if (address == null)
-                //Validate if Address is null
-                errors = errors + " The address is required";
-            if (phone == null)
-                //Validate if Phone is null
-                errors = errors + " The phone is required";
+            return ResultFactory.FromSuccess(model);
         }
     }
     public class User
