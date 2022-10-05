@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Sat.Recruitment.Core;
 using Sat.Recruitment.Domain;
+using Sat.Recruitment.Infrastructure.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,6 +13,7 @@ namespace Sat.Recruitment.Infrastructure
     public class UserRepository : IUserRepository, IDisposable
     {
         private readonly SemaphoreSlim semaphore = new SemaphoreSlim(1);
+        private readonly ICsvSerializer<User> serializer = new UserSerializer();
         private readonly string filePath;
 
         public UserRepository(IConfiguration config)
@@ -40,41 +41,13 @@ namespace Sat.Recruitment.Infrastructure
             foreach (var line in lines)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-
-                string[] fields = line.Split(',');
-
-                var type = fields[4];
-                var money = decimal.Parse(fields[5]);
-
-                User user = (UserType)Enum.Parse(typeof(UserType), type) switch
-                {
-                    UserType.Normal => new NormalUser(money),
-                    UserType.SuperUser => new SuperUser(money),
-                    _ => new PremiumUser(money)
-                };
-
-                user.Name = fields[0];
-                user.Email = fields[1];
-                user.Address = fields[2];
-                user.Phone = fields[3];
-
-                yield return user;
+                yield return serializer.Deserialize(line);
             }
         }
 
         public async Task CreateUserAsync(User user)
         {
-            string[] fields =
-            {
-                user.Name,
-                user.Email,
-                user.Address,
-                user.Phone,
-                user.UserType.ToString(),
-                user.Money.ToString()
-            };
-
-            var line = string.Join(',', fields);
+            string line = serializer.Serialize(user);
 
             await semaphore.WaitAsync();
 
