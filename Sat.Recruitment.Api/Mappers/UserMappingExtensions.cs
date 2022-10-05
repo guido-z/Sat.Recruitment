@@ -1,4 +1,5 @@
-﻿using Sat.Recruitment.Api.Models;
+﻿using Sat.Recruitment.Api.Helpers;
+using Sat.Recruitment.Api.Models;
 using Sat.Recruitment.Domain;
 using System;
 
@@ -18,7 +19,7 @@ namespace Sat.Recruitment.Api.Mappers
             };
 
             user.Name = model.Name;
-            user.Email = model.Email;
+            user.Email = EmailNormalizer.NormalizeEmail(model.Email);
             user.Address = model.Address;
             user.Phone = model.Phone;
             return user;

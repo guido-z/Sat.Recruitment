@@ -2,7 +2,6 @@
 using Sat.Recruitment.Api.Mappers;
 using Sat.Recruitment.Api.Models;
 using Sat.Recruitment.Api.Results;
-using Sat.Recruitment.Domain;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,16 +29,7 @@ namespace Sat.Recruitment.Api.Controllers
 
             Domain.User newUser = model.MapToDomainUser();
 
-            var reader = ReadUsersFromFile();
-
-            //Normalize email
-            var aux = model.Email.Split(new char[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-
-            var atIndex = aux[0].IndexOf("+", StringComparison.Ordinal);
-
-            aux[0] = atIndex < 0 ? aux[0].Replace(".", "") : aux[0].Replace(".", "").Remove(atIndex);
-
-            newUser.Email = string.Join("@", new string[] { aux[0], aux[1] });
+            var reader = ReadUsersFromFile();                        
 
             while (reader.Peek() >= 0)
             {
