@@ -1,12 +1,10 @@
 ﻿using Moq;
-using Sat.Recruitment.Api.Models;
 using Sat.Recruitment.Application;
 using Sat.Recruitment.Application.Exceptions;
 using Sat.Recruitment.Core;
 using Sat.Recruitment.Domain;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -44,6 +42,9 @@ namespace Sat.Recruitment.Test
             repository.Setup(r => r.GetUsersAsync())
                 .Returns(Enumerable.Empty<User>().ToAsyncEnumerable());
 
+            repository.Setup(r => r.CreateUserAsync(It.IsAny<User>()))
+                .Returns(Task.CompletedTask);
+
             var application = new UserApplication(repository.Object);
             
             User user = new NormalUser(124)
@@ -57,7 +58,7 @@ namespace Sat.Recruitment.Test
             User result = await application.CreateUserAsync(user);
 
             Assert.Equal(result.Name, user.Name);
-            Assert.Equal(result.Email, user.Name);
+            Assert.Equal(result.Email, user.Email);
             Assert.Equal(result.Address, user.Address);
             Assert.Equal(result.Phone, user.Phone);
             Assert.Equal(result.UserType, user.UserType);

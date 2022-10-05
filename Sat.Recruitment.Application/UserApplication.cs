@@ -1,22 +1,33 @@
-﻿using Sat.Recruitment.Core;
+﻿using Sat.Recruitment.Application.Exceptions;
+using Sat.Recruitment.Core;
 using Sat.Recruitment.Domain;
-using System;
 using System.Threading.Tasks;
 
 namespace Sat.Recruitment.Application
 {
     public class UserApplication : IUserApplication
     {
-        private readonly IUserRepository userRepository;
+        private readonly IUserRepository repository;
 
-        public UserApplication(IUserRepository userRepository)
+        public UserApplication(IUserRepository repository)
         {
-            this.userRepository = userRepository;
+            this.repository = repository;
         }
 
-        public Task<User> CreateUserAsync(User user)
+        public async Task<User> CreateUserAsync(User user)
         {
-            throw new NotImplementedException();
+            var users = repository.GetUsersAsync();
+
+            await foreach (var u in users)
+            {
+                if (u.Equals(user))
+                {
+                    throw new DuplicateUserException(user);
+                }
+            }
+
+            await repository.CreateUserAsync(user);
+            return user;
         }
     }
 }
