@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Sat.Recruitment.Infrastructure
 {
-    public class UserRepository : IUserRepository, IDisposable
+    public sealed class UserRepository : IUserRepository, IDisposable
     {
         private readonly SemaphoreSlim semaphore = new SemaphoreSlim(1);
         private readonly ICsvSerializer<User> serializer = new UserSerializer();

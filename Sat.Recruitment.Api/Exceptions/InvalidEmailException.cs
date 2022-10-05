@@ -2,7 +2,7 @@
 
 namespace Sat.Recruitment.Api.Exceptions
 {
-    public class InvalidEmailException : Exception
+    public sealed class InvalidEmailException : Exception
     {
         public InvalidEmailException()
         {

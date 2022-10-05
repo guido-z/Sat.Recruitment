@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Sat.Recruitment.Application
 {
-    public class UserApplication : IUserApplication
+    public sealed class UserApplication : IUserApplication
     {
         private readonly IUserRepository repository;
         private readonly ILogger<UserApplication> logger;
@@ -22,7 +22,11 @@ namespace Sat.Recruitment.Application
         public async Task<User> CreateUserAsync(User user, CancellationToken cancellationToken = default)
         {
             var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-            
+
+            /* I'm fetching all users because we're dealing with very few records.
+             * For real world scenarios with larger datasets this is not a good idea,
+             * and we should search for duplicate users in the database instead of loading
+             * everything into memory */
             var users = repository.GetUsersAsync(cancellationToken);
 
             await foreach (var u in users)
