@@ -42,7 +42,7 @@ namespace Sat.Recruitment.Api.Controllers
             {
                 await application.CreateUserAsync(user, cancellationToken);
                 logger.LogInformation("User {0} has been successfully created.", model.Email);
-                return ResultFactory.FromSuccess(user);
+                return ResultFactory.FromSuccess(user.ToViewModel());
             }
             catch (DuplicateUserException ex)
             {

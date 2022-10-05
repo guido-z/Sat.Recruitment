@@ -24,5 +24,18 @@ namespace Sat.Recruitment.Api.Mappers
             user.Phone = model.Phone;
             return user;
         }
+
+        public static UserViewModel ToViewModel(this User user)
+        {
+            return new UserViewModel
+            {
+                Name = user.Name,
+                Email = user.Email,
+                Address = user.Address,
+                Phone = user.Phone,
+                UserType = user.UserType.ToString(),
+                Money = user.Money
+            };
+        }
     }
 }
