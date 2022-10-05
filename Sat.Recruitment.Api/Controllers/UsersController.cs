@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Sat.Recruitment.Api.Mappers;
 using Sat.Recruitment.Api.Models;
 using Sat.Recruitment.Api.Results;
 using Sat.Recruitment.Domain;
@@ -27,43 +28,7 @@ namespace Sat.Recruitment.Api.Controllers
                 return ResultFactory.FromValidationErrors(ModelState);
             }
 
-            if (model.UserType == "Normal")
-            {
-                if (model.Money > 100)
-                {
-                    var percentage = Convert.ToDecimal(0.12);
-                    //If new user is normal and has more than USD100
-                    var gif = model.Money * percentage;
-                    model.Money += gif;
-                }
-                if (model.Money < 100)
-                {
-                    if (model.Money > 10)
-                    {
-                        var percentage = Convert.ToDecimal(0.8);
-                        var gif = model.Money * percentage;
-                        model.Money += gif;
-                    }
-                }
-            }
-            if (model.UserType == "SuperUser")
-            {
-                if (model.Money > 100)
-                {
-                    var percentage = Convert.ToDecimal(0.20);
-                    var gif = model.Money * percentage;
-                    model.Money += gif;
-                }
-            }
-            if (model.UserType == "Premium")
-            {
-                if (model.Money > 100)
-                {
-                    var gif = model.Money * 2;
-                    model.Money += gif;
-                }
-            }
-
+            Domain.User newUser = model.MapToDomainUser();
 
             var reader = ReadUsersFromFile();
 
@@ -74,7 +39,7 @@ namespace Sat.Recruitment.Api.Controllers
 
             aux[0] = atIndex < 0 ? aux[0].Replace(".", "") : aux[0].Replace(".", "").Remove(atIndex);
 
-            model.Email = string.Join("@", new string[] { aux[0], aux[1] });
+            newUser.Email = string.Join("@", new string[] { aux[0], aux[1] });
 
             while (reader.Peek() >= 0)
             {
