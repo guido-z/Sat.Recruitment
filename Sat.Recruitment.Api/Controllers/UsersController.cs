@@ -13,7 +13,7 @@ namespace Sat.Recruitment.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public partial class UsersController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IUserApplication application;
         private readonly ILogger<UsersController> logger;
