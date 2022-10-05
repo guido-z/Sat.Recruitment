@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Microsoft.Extensions.Logging;
+using Moq;
 using Sat.Recruitment.Application;
 using Sat.Recruitment.Application.Exceptions;
 using Sat.Recruitment.Core;
@@ -14,6 +15,7 @@ namespace Sat.Recruitment.Test
     public class UserApplicationTests
     {
         private readonly Mock<IUserRepository> repository = new Mock<IUserRepository>();
+        private readonly ILogger<UserApplication> logger = Mock.Of<ILogger<UserApplication>>();
 
         [Fact]
         public async Task CreateUserAsync_ExistingUser_ThrowsException()
@@ -31,7 +33,7 @@ namespace Sat.Recruitment.Test
             repository.Setup(r => r.GetUsersAsync(CancellationToken.None))
                 .Returns(users.ToAsyncEnumerable());
 
-            var application = new UserApplication(repository.Object);
+            var application = new UserApplication(repository.Object, logger);
 
             await Assert.ThrowsAsync<DuplicateUserException>(
                 () => application.CreateUserAsync(user, CancellationToken.None));
@@ -46,7 +48,7 @@ namespace Sat.Recruitment.Test
             repository.Setup(r => r.CreateUserAsync(It.IsAny<User>()))
                 .Returns(Task.CompletedTask);
 
-            var application = new UserApplication(repository.Object);
+            var application = new UserApplication(repository.Object, logger);
             
             User user = new NormalUser(124)
             {

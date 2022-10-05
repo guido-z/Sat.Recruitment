@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Sat.Recruitment.Api.Controllers;
 using Sat.Recruitment.Api.Models;
@@ -15,6 +16,7 @@ namespace Sat.Recruitment.Test
     public class UsersControllerTests
     {
         private readonly Mock<IUserApplication> application = new Mock<IUserApplication>();
+        private readonly ILogger<UsersController> logger = Mock.Of<ILogger<UsersController>>();
 
         [Fact]
         public async Task CreateUser_UserDoesNotExist_ReturnsOk()
@@ -40,7 +42,7 @@ namespace Sat.Recruitment.Test
             application.Setup(a => a.CreateUserAsync(It.IsAny<User>(), CancellationToken.None))
                 .ReturnsAsync(user);
 
-            var userController = new UsersController(application.Object);
+            var userController = new UsersController(application.Object, logger);
 
             IActionResult result = await userController.CreateUser(model);
 
@@ -63,7 +65,7 @@ namespace Sat.Recruitment.Test
             application.Setup(a => a.CreateUserAsync(It.IsAny<User>(), CancellationToken.None))
                 .ThrowsAsync(new DuplicateUserException());
 
-            var userController = new UsersController(application.Object);
+            var userController = new UsersController(application.Object, logger);
             
             IActionResult result = await userController.CreateUser(model);
 
