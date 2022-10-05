@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Sat.Recruitment.Api.Models;
 using Sat.Recruitment.Api.Results;
+using Sat.Recruitment.Domain;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 
 namespace Sat.Recruitment.Api.Controllers
