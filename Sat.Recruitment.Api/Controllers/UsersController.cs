@@ -5,6 +5,7 @@ using Sat.Recruitment.Api.Results;
 using Sat.Recruitment.Application.Exceptions;
 using Sat.Recruitment.Core;
 using Sat.Recruitment.Domain;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Sat.Recruitment.Api.Controllers
@@ -21,7 +22,7 @@ namespace Sat.Recruitment.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser(UserViewModel model)
+        public async Task<IActionResult> CreateUser(UserViewModel model, CancellationToken cancellationToken = default)
         {
             if (!ModelState.IsValid)
             {
@@ -32,7 +33,7 @@ namespace Sat.Recruitment.Api.Controllers
 
             try
             {
-                await application.CreateUserAsync(user);
+                await application.CreateUserAsync(user, cancellationToken);
                 return ResultFactory.FromSuccess(user);
             }
             catch (DuplicateUserException ex)

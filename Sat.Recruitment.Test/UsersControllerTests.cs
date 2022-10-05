@@ -5,6 +5,7 @@ using Sat.Recruitment.Api.Models;
 using Sat.Recruitment.Application.Exceptions;
 using Sat.Recruitment.Core;
 using Sat.Recruitment.Domain;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -36,7 +37,7 @@ namespace Sat.Recruitment.Test
                 Phone = "+349 1122354215",
             };
 
-            application.Setup(a => a.CreateUserAsync(It.IsAny<User>()))
+            application.Setup(a => a.CreateUserAsync(It.IsAny<User>(), CancellationToken.None))
                 .ReturnsAsync(user);
 
             var userController = new UsersController(application.Object);
@@ -59,7 +60,7 @@ namespace Sat.Recruitment.Test
                 Money = 124
             };
 
-            application.Setup(a => a.CreateUserAsync(It.IsAny<User>()))
+            application.Setup(a => a.CreateUserAsync(It.IsAny<User>(), CancellationToken.None))
                 .ThrowsAsync(new DuplicateUserException());
 
             var userController = new UsersController(application.Object);

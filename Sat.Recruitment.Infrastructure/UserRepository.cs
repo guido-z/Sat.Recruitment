@@ -4,6 +4,7 @@ using Sat.Recruitment.Domain;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,7 +22,7 @@ namespace Sat.Recruitment.Infrastructure
                 config["RelativeFilePath"]);
         }
 
-        public async IAsyncEnumerable<User> GetUsersAsync()
+        public async IAsyncEnumerable<User> GetUsersAsync(CancellationToken cancellationToken = default)
         {
             string[] lines;
 
@@ -38,6 +39,8 @@ namespace Sat.Recruitment.Infrastructure
 
             foreach (var line in lines)
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 string[] fields = line.Split(',');
 
                 var type = fields[4];
