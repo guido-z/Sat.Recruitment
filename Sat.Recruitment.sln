@@ -1,13 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30709.64
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sat.Recruitment.Api", "Sat.Recruitment.Api\Sat.Recruitment.Api.csproj", "{1F342EA2-E7B1-4E53-AB93-9C62288D3FB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sat.Recruitment.Test", "Sat.Recruitment.Test\Sat.Recruitment.Test.csproj", "{42E696E9-2672-4B91-AD96-353A69F7219C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sat.Recruitment.Test", "Sat.Recruitment.Test\Sat.Recruitment.Test.csproj", "{42E696E9-2672-4B91-AD96-353A69F7219C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sat.Recruitment.Domain", "Sat.Recruitment.Domain\Sat.Recruitment.Domain.csproj", "{A7946E0C-4883-4E00-8027-9179A0F915AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sat.Recruitment.Domain", "Sat.Recruitment.Domain\Sat.Recruitment.Domain.csproj", "{A7946E0C-4883-4E00-8027-9179A0F915AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sat.Recruitment.Infrastructure", "Sat.Recruitment.Infrastructure\Sat.Recruitment.Infrastructure.csproj", "{4E209FD9-AA71-48A9-B67D-EA146F4545C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sat.Recruitment.Core", "Sat.Recruitment.Core\Sat.Recruitment.Core.csproj", "{5AEDF5B9-593F-457B-B0DA-433E873BFC47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sat.Recruitment.Application", "Sat.Recruitment.Application\Sat.Recruitment.Application.csproj", "{23859924-E705-47A9-B1E0-9746FADB471C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +33,18 @@ Global
 		{A7946E0C-4883-4E00-8027-9179A0F915AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7946E0C-4883-4E00-8027-9179A0F915AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7946E0C-4883-4E00-8027-9179A0F915AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E209FD9-AA71-48A9-B67D-EA146F4545C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E209FD9-AA71-48A9-B67D-EA146F4545C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E209FD9-AA71-48A9-B67D-EA146F4545C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E209FD9-AA71-48A9-B67D-EA146F4545C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AEDF5B9-593F-457B-B0DA-433E873BFC47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AEDF5B9-593F-457B-B0DA-433E873BFC47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AEDF5B9-593F-457B-B0DA-433E873BFC47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AEDF5B9-593F-457B-B0DA-433E873BFC47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23859924-E705-47A9-B1E0-9746FADB471C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23859924-E705-47A9-B1E0-9746FADB471C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23859924-E705-47A9-B1E0-9746FADB471C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23859924-E705-47A9-B1E0-9746FADB471C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
