@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
+using Sat.Recruitment.Api.Results;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,12 +8,6 @@ using System.Threading.Tasks;
 
 namespace Sat.Recruitment.Api.Controllers
 {
-    public class Result
-    {
-        public bool IsSuccess { get; set; }
-        public string Errors { get; set; }
-    }
-
     [ApiController]
     [Route("[controller]")]
     public partial class UsersController : ControllerBase
@@ -25,18 +19,16 @@ namespace Sat.Recruitment.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<Result> CreateUser(string name, string email, string address, string phone, string userType, string money)
+        public async Task<IActionResult> CreateUser(string name, string email, string address, string phone, string userType, string money)
         {
             var errors = "";
 
             ValidateErrors(name, email, address, phone, ref errors);
 
             if (errors != null && errors != "")
-                return new Result()
-                {
-                    IsSuccess = false,
-                    Errors = errors
-                };
+            {
+                return ResultFactory.FromErrorMessages(errors);
+            }
 
             var newUser = new User
             {
@@ -138,38 +130,22 @@ namespace Sat.Recruitment.Api.Controllers
                 {
                     Debug.WriteLine("User Created");
 
-                    return new Result()
-                    {
-                        IsSuccess = true,
-                        Errors = "User Created"
-                    };
+                    return ResultFactory.FromSuccess(newUser);
                 }
                 else
                 {
                     Debug.WriteLine("The user is duplicated");
 
-                    return new Result()
-                    {
-                        IsSuccess = false,
-                        Errors = "The user is duplicated"
-                    };
+                    return ResultFactory.FromErrorMessages("The user is duplicated");
                 }
             }
             catch
             {
                 Debug.WriteLine("The user is duplicated");
-                return new Result()
-                {
-                    IsSuccess = false,
-                    Errors = "The user is duplicated"
-                };
+                return ResultFactory.FromErrorMessages("The user is duplicated");
             }
 
-            return new Result()
-            {
-                IsSuccess = true,
-                Errors = "User Created"
-            };
+            return ResultFactory.FromSuccess(newUser);
         }
 
         //Validate errors
