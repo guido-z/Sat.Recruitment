@@ -1,6 +1,6 @@
 ﻿namespace Sat.Recruitment.Api.Results
 {
-    sealed class Result
+    public sealed class Result
     {
         public bool IsSuccess { get; set; }
 
