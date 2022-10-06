@@ -2,8 +2,8 @@
 {
     public class SuperUser : User
     {
-        public SuperUser(decimal money)
-            : base(UserType.SuperUser, money)
+        public SuperUser(string name, string email, string address, string phone, decimal money)
+            : base(name, email, address, phone, UserType.SuperUser, money)
         {
         }
 

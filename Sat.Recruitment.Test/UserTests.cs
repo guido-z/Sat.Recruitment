@@ -11,7 +11,7 @@ namespace Sat.Recruitment.Test
         [InlineData(200, 224)]
         public void NormalUser_GetMoney_ReturnsCorrectAmount(decimal money, decimal expected)
         {
-            User user = new NormalUser(money);
+            User user = new NormalUser("Mike", "mike@gmail.com", "Av. Juan G", "+349 1122354215", money);
             Assert.Equal(expected, user.Money);
         }
 
@@ -20,7 +20,7 @@ namespace Sat.Recruitment.Test
         [InlineData(200, 240)]
         public void SuperUser_GetMoney_ReturnsCorrectAmount(decimal money, decimal expected)
         {
-            User user = new SuperUser(money);
+            User user = new SuperUser("Mike", "mike@gmail.com", "Av. Juan G", "+349 1122354215", money);
             Assert.Equal(expected, user.Money);
         }
 
@@ -29,7 +29,7 @@ namespace Sat.Recruitment.Test
         [InlineData(200, 600)]
         public void PremiumUser_GetMoney_ReturnsCorrectAmount(decimal money, decimal expected)
         {
-            User user = new PremiumUser(money);
+            User user = new PremiumUser("Mike", "mike@gmail.com", "Av. Juan G", "+349 1122354215", money);
             Assert.Equal(expected, user.Money);
         }
     }

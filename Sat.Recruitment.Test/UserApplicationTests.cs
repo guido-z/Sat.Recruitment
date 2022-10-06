@@ -20,13 +20,7 @@ namespace Sat.Recruitment.Test
         [Fact]
         public async Task CreateUserAsync_ExistingUser_ThrowsException()
         {
-            User user = new NormalUser(124)
-            {
-                Name = "Agustina",
-                Email = "Agustina@gmail.com",
-                Address = "Av. Juan G",
-                Phone = "+349 1122354215"
-            };
+            User user = new NormalUser("Agustina", "Agustina@gmail.com", "Av. Juan G", "+349 1122354215", 124);
 
             var users = new List<User> { user };
 
@@ -49,14 +43,8 @@ namespace Sat.Recruitment.Test
                 .Returns(Task.CompletedTask);
 
             var application = new UserApplication(repository.Object, logger);
-            
-            User user = new NormalUser(124)
-            {
-                Name = "Agustina",
-                Email = "Agustina@gmail.com",
-                Address = "Av. Juan G",
-                Phone = "+349 1122354215"
-            };
+
+            User user = new NormalUser("Agustina", "Agustina@gmail.com", "Av. Juan G", "+349 1122354215", 124);
 
             User result = await application.CreateUserAsync(user, CancellationToken.None);
 

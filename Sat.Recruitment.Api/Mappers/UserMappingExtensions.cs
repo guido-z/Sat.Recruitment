@@ -9,20 +9,14 @@ namespace Sat.Recruitment.Api.Mappers
     {
         public static User MapToDomainUser(this UserViewModel model)
         {
-            var type = (UserType)Enum.Parse(typeof(UserType), model.UserType);
-            
-            User user = type switch
-            {
-                UserType.Normal => new NormalUser(model.Money),
-                UserType.SuperUser => new SuperUser(model.Money),
-                _ => new PremiumUser(model.Money)
-            };
+            var email = EmailNormalizer.NormalizeEmail(model.Email);
 
-            user.Name = model.Name;
-            user.Email = EmailNormalizer.NormalizeEmail(model.Email);
-            user.Address = model.Address;
-            user.Phone = model.Phone;
-            return user;
+            return (UserType)Enum.Parse(typeof(UserType), model.UserType) switch
+            {
+                UserType.Normal => new NormalUser(model.Name, email, model.Address, model.Phone, model.Money),
+                UserType.SuperUser => new SuperUser(model.Name, email, model.Address, model.Phone, model.Money),
+                _ => new PremiumUser(model.Name, email, model.Address, model.Phone, model.Money),
+            };
         }
 
         public static UserViewModel ToViewModel(this User user)

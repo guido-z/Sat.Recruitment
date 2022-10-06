@@ -2,8 +2,8 @@
 {
     public class NormalUser : User
     {
-        public NormalUser(decimal money)
-            : base(UserType.Normal, money)
+        public NormalUser(string name, string email, string address, string phone, decimal money)
+            : base(name, email, address, phone, UserType.Normal, money)
         {
         }
 

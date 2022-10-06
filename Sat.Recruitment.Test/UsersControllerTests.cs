@@ -31,13 +31,7 @@ namespace Sat.Recruitment.Test
                 Money = 124
             };
 
-            var user = new NormalUser(124)
-            {
-                Name = "Mike",
-                Email = "mike@gmail.com",
-                Address = "Av. Juan G",
-                Phone = "+349 1122354215",
-            };
+            var user = new NormalUser("Mike", "mike@gmail.com", "Av. Juan G", "+349 1122354215", 124);
 
             application.Setup(a => a.CreateUserAsync(It.IsAny<User>(), CancellationToken.None))
                 .ReturnsAsync(user);

@@ -25,22 +25,19 @@ namespace Sat.Recruitment.Infrastructure.Helpers
         {
             string[] fields = str.Split(',');
 
+            var name = fields[0];
+            var email = fields[1];
+            var address = fields[2];
+            var phone = fields[3];
             var type = fields[4];
             var money = decimal.Parse(fields[5]);
 
-            User user = (UserType)Enum.Parse(typeof(UserType), type) switch
+            return (UserType)Enum.Parse(typeof(UserType), type) switch
             {
-                UserType.Normal => new NormalUser(money),
-                UserType.SuperUser => new SuperUser(money),
-                _ => new PremiumUser(money)
+                UserType.Normal => new NormalUser(name, email, address, phone, money),
+                UserType.SuperUser => new SuperUser(name, email, address, phone, money),
+                _ => new PremiumUser(name, email, address, phone, money)
             };
-
-            user.Name = fields[0];
-            user.Email = fields[1];
-            user.Address = fields[2];
-            user.Phone = fields[3];
-
-            return user;
         }        
     }
 }

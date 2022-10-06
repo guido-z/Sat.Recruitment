@@ -2,8 +2,8 @@
 {
     public class PremiumUser : User
     {
-        public PremiumUser(decimal money)
-            : base(UserType.Premium, money)
+        public PremiumUser(string name, string email, string address, string phone, decimal money)
+            : base(name, email, address, phone, UserType.Premium, money)
         {
         }
 
